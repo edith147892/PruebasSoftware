@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora Científica Web</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .form-group { margin-bottom: 10px; }
+        #resultado { font-weight: bold; color: blue; margin-top: 20px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Calculadora Científica</h1>
+    
+    <div class="form-group">
+        <label>Número A:</label>
+        <input type="number" id="numA" value="0">
+    </div>
+
+    <div class="form-group">
+        <label>Número B (opcional):</label>
+        <input type="number" id="numB" value="0">
+    </div>
+
+    <div class="form-group">
+
+        <!-- BOTONES CON ID PARA SELENIUM -->
+        <button id="btnSumar" onclick="calcular('sumar')">Sumar</button>
+        <button id="btnRestar" onclick="calcular('restar')">Restar</button>
+        <button id="btnMultiplicar" onclick="calcular('multiplicar')">Multiplicar</button>
+        <button id="btnDividir" onclick="calcular('dividir')">Dividir</button>
+
+        <!-- NUEVA OPERACIÓN -->
+        <button id="btnRaiz" onclick="calcular('operacion_nueva')">Raíz Cuadrada</button>
+    </div>
+
+    <div id="resultado"></div>
+
+    <script>
+        async function calcular(accion) {
+            const a = document.getElementById('numA').value;
+            const b = document.getElementById('numB').value;
+
+            const response = await fetch('api.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ accion, a, b })
+            });
+
+            const data = await response.json();
+            const resDiv = document.getElementById('resultado');
+
+            if (data.status === 'success') {
+                resDiv.innerHTML = "Resultado: " + data.resultado;
+                resDiv.className = "";
+            } else {
+                resDiv.innerHTML = "Error: " + data.mensaje;
+                resDiv.className = "error";
+            }
+        }
+    </script>
+</body>
+</html>
