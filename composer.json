@@ -1,0 +1,13 @@
+{
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+
+    " autoload ": {
+    " classmap ": [ " src /"
+        ]
+    },
+    "require": {
+        "php-webdriver/webdriver": "^1.1"
+    }
+}
